@@ -13,7 +13,10 @@ class TestRecognize(TestCase):
         self.training_set = self.asl.build_training(FEATURES)
         self.test_set = self.asl.build_test(FEATURES)
         self.models = train_all_words(self.training_set, SelectorConstant)
-
+    def print_out(self):
+        probs, guesses = recognize(self.models, self.test_set)
+        print(probs)
+        print(guesses)
     def test_recognize_probabilities_interface(self):
         probs, _ = recognize(self.models, self.test_set)
         self.assertEqual(len(probs), self.test_set.num_items, "Number of test items in probabilities list incorrect.")

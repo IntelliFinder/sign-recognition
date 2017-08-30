@@ -20,6 +20,23 @@ def recognize(models: dict, test_set: SinglesData):
     warnings.filterwarnings("ignore", category=DeprecationWarning)
     probabilities = []
     guesses = []
-    # TODO implement the recognizer
-    # return probabilities, guesses
-    raise NotImplementedError
+    #go over each model for each word and compare this model to other words then you can check the probability that a particular word is the  one the person is signing
+    
+    #for each word in the dataset
+    for word_id in range(len(test_set.wordlist)):
+        logL = {}
+        #get its X and lengths
+        X, lengths = test_set.get_item_Xlengths( word_id )
+        #for every trained model in the dataset
+        for word, model in models.items():
+            #train the model on this word
+            try:
+                X, lengths = test_set.get_item_Xlengths( word_id )
+                #get log-likelihood
+                logL[word] = model.score( X, lengths )
+            except:
+                logL[word] = float("-inf")
+        probabilities.append( logL )
+        guesses.append( max( [ key for key, val in logL.items() ]) )
+
+    return probabilities, guesses
