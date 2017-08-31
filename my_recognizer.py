@@ -31,7 +31,6 @@ def recognize(models: dict, test_set: SinglesData):
         for word, model in models.items():
             #train the model on this word
             try:
-                X, lengths = test_set.get_item_Xlengths( word_id )
                 #get log-likelihood
                 logL[word] = model.score( X, lengths )
             except:
