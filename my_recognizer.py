@@ -18,24 +18,30 @@ def recognize(models: dict, test_set: SinglesData):
            ['WORDGUESS0', 'WORDGUESS1', 'WORDGUESS2',...]
    """
     warnings.filterwarnings("ignore", category=DeprecationWarning)
+    
     probabilities = []
     guesses = []
     #go over each model for each word and compare this model to other words then you can check the probability that a particular word is the  one the person is signing
-    
+
     #for each word in the dataset
     for word_id in range(len(test_set.wordlist)):
         logL = {}
         #get its X and lengths
         X, lengths = test_set.get_item_Xlengths( word_id )
+        highest_score = float("-inf")
+        best_guess = ''
         #for every trained model in the dataset
         for word, model in models.items():
             #train the model on this word
             try:
                 #get log-likelihood
-                logL[word] = model.score( X, lengths )
+                score = model.score( X, lengths )
+                logL[word] = score
+                if ( score > highest_score ):
+                    highest_score = score
+                    best_guess = word
             except:
                 logL[word] = float("-inf")
         probabilities.append( logL )
-        guesses.append( max( [ key for key, val in logL.items() ]) )
-
+        guesses.append( best_guess )
     return probabilities, guesses
