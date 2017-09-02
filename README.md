@@ -1,7 +1,8 @@
 # Artificial Intelligence Engineer Nanodegree
 ## Probabilistic Models
 ## Project: Sign Language Recognition System
-
+### Brief Overview
+Open up 'asl_recognizer.html' in a browser for code and results.
 ### Install
 
 This project requires **Python 3** and the following Python libraries installed:
